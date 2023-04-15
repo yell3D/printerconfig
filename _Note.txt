@@ -1,9 +1,0 @@
-ln -s /home/pi/printer_data/config/printerconfig/KlipperScreen.conf /home/pi/printer_data/config/KlipperScreen.conf
-
-https://klipperscreen.readthedocs.io/en/latest/Installation/
-
-
-
-https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging#moonraker-update-manager-setup
-
-~/printer_data/config/printerconfig $ git clone https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging.git
