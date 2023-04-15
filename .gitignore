@@ -1,3 +1,10 @@
+*~
+.*
+.fuse_hidden*
+.directory
+.Trash-*
 printer-*
 *.bkp
 *.orig
+!/.gitignore
+
