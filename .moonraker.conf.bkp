@@ -4,6 +4,9 @@ port = 7125
 max_upload_size = 1024
 klippy_uds_address = ~/printer_data/comms/klippy.sock
 
+[file_manager]
+enable_object_processing = False
+
 [authorization]
 cors_domains = 
 	https://my.mainsail.xyz
@@ -58,44 +61,4 @@ origin = https://github.com/mainsail-crew/sonar.git
 primary_branch = main
 managed_services = sonar
 install_script = tools/install.sh
-
-[file_manager]
-enable_object_processing = True
-queue_gcode_uploads = True
-
-[job_queue]
-load_on_startup = True
-
-[update_manager KlipperScreen]
-type = git_repo
-path = ~/KlipperScreen
-origin = https://github.com/jordanruthe/KlipperScreen.git
-env = ~/.KlipperScreen-env/bin/python
-requirements = scripts/KlipperScreen-requirements.txt
-install_script = scripts/KlipperScreen-install.sh
-managed_services = KlipperScreen
-
-[update_manager Klipper-Adaptive-Meshing-Purging]
-type = git_repo
-channel = dev
-path = ~/printer_data/config/printerconfig/Klipper-Adaptive-Meshing-Purging
-origin = https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging.git
-managed_services = klipper
-primary_branch = main
-
-[power printer]
-type = gpio
-pin = gpio16
-off_when_shutdown = True
-restart_klipper_when_powered = True
-initial_state = on
-on_when_job_queued = true
-locked_while_printing = True
-bound_service = klipper
-
-[button power_button]
-type = gpio
-pin = gpio03
-on_press = 
-	{% do call_method("printer.emergency_stop") %}
 
