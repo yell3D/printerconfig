@@ -1,7 +1,5 @@
-ln -s /home/pi/printer_data/config/printerconfig/KlipperScreen.conf /home/pi/printer_data/config/KlipperScreen.conf
+
 
 https://klipperscreen.readthedocs.io/en/latest/Installation/
-
-
 
 https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging
