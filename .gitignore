@@ -1,10 +1,18 @@
+# Linux things
 *~
-.*
 .fuse_hidden*
 .directory
 .Trash-*
+
+# dont backup backups
 printer-*
 *.bkp
 *.orig
+
+# shared git repo
+printer.cfg
+.*
+
+# always include gitignore
 !/.gitignore
 
