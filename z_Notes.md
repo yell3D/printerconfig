@@ -42,11 +42,15 @@ python3 ~/katapult/scripts/flash_can.py -i can0 -f ~/klipper/out/klipper.bin -u 
 
 
 ### VTCAT
-##  PitB : b1d44ac537b4
+##  Pico :  (usb can bridge)
 ##  EBB36: 0f31066bab9f
+##  PitB : 
+
 ### Micron
 ##  Manta: 8ac34ee54870
 ##  EBB36: 75e72618a866
+
+##  PitB : b1d44ac537b4 (broken ADC)
 
 # Katapult  build deployer & flash
 python3 ~/katapult/scripts/flashtool.py -u b1d44ac537b4 -f ~/katapult/out/deployer.bin
