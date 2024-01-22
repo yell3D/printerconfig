@@ -36,6 +36,7 @@ python3 ~/katapult/scripts/flash_can.py -q
 ##  Manta: 8ac34ee54870
 ##  EBB36: 75e72618a866
 
+
 ##  PitB : b1d44ac537b4 (broken ADC)
 
 
