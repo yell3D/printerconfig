@@ -19,6 +19,11 @@ SHAPER_CALIBRATE AXIS=Y
 SHAPER_CALIBRATE AXIS=X
 
 
+dfu flash
+sudo dfu-util -a 0 -D ~/klipper/out/klipper.bin --dfuse-address 0x08002000:leave -d 0483:df11
+
+
+
 #-------------------------#
 #   CAN                   #
 #-------------------------#
