@@ -20,25 +20,11 @@ SHAPER_CALIBRATE AXIS=X
 
 
 #-------------------------#
-#   Katapult              #
+#   CAN                   #
 #-------------------------#
-# [-i can0] or [-f ~/klipper/out/klipper.bin] are defaults
 
-# query can
+# query can  [-i can0] or [-f ~/klipper/out/klipper.bin] are defaults
 python3 ~/katapult/scripts/flash_can.py -q
-
-
-# Update SKR PICO UART
-# Press the SKR Pico reset button twice to enter the Canoot bootloader.
-python3 ~/katapult/scripts/flash_can.py -d /dev/ttyAMA0
-
-
-### RP2040
-# Update klipper
-python3 ~/katapult/scripts/flashtool.py -u 75e72618a866 -r 
-
-#install
-python3 ~/katapult/scripts/flash_can.py -i can0 -f ~/klipper/out/klipper.bin -u 75e72618a866
 
 
 ### VTCAT
@@ -52,9 +38,24 @@ python3 ~/katapult/scripts/flash_can.py -i can0 -f ~/klipper/out/klipper.bin -u 
 
 ##  PitB : b1d44ac537b4 (broken ADC)
 
-# Katapult  build deployer & flash
-python3 ~/katapult/scripts/flashtool.py -u b1d44ac537b4 -f ~/katapult/out/deployer.bin
 
+
+#-------------------------#
+#   Klipper Update        #
+#-------------------------#
+
+# Pitb & ebb36
+~/katapult/scripts/flash_can.py -u 62206b36544e
+
+
+## SKR Pico  ############## ########################################################################
+~/katapult/scripts/flash_can.py -u 6579fddfb1e6 -f ~/klipper/out/klipper.bin 
+#> makes error = OKAY
+
+ls /dev/serial/by-id
+#> usb-katapult_rp2040_45503571290ABEA8-if00
+~/katapult/scripts/flash_can.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00
+###################################################################################################
 
 
 
