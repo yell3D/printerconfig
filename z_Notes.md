@@ -55,8 +55,8 @@ python3 ~/katapult/scripts/flash_can.py -q
 
 
 ## SKR Pico  ############## ########################################################################
-~/katapult/scripts/flash_can.py -u 6579fddfb1e6 -f ~/klipper/out/klipper.bin 
-#> makes error = OKAY
+~/katapult/scripts/flash_can.py -u 6579fddfb1e6
+#> makes error = OKAY! its just to put the pico in flash mode
 
 ls /dev/serial/by-id
 #> usb-katapult_rp2040_45503571290ABEA8-if00
