@@ -64,6 +64,17 @@ ls /dev/serial/by-id
 ###################################################################################################
 
 
+#-------------------------#
+#   Github Repo Push      #
+#-------------------------#
+ssh-keygen -t ed25519 -C "yell3d@micron" -f ~/.ssh/id_ed25519_printerbackupscript
+chmod 600 ~/.ssh/id_ed25519_printerbackupscript*
+cat ~/.ssh/id_ed25519_printerbackupscript.pub
+
+## add to github ## checkbox write access
+
+git config --add --local core.sshCommand 'ssh -i ~/.ssh/id_ed25519_printerbackupscript'
+
 
 
 #*# <---------------------- SAVE_CONFIG ---------------------->
