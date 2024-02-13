@@ -1,0 +1,16 @@
+# Linux things
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# dont backup backups
+*.bkp
+*.orig
+
+# shared git repo
+.*
+
+# always include gitignore
+!/.gitignore
+
