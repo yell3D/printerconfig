@@ -19,8 +19,7 @@ SHAPER_CALIBRATE AXIS=Y
 SHAPER_CALIBRATE AXIS=X
 
 
-dfu flash
-sudo dfu-util -a 0 -D ~/klipper/out/klipper.bin --dfuse-address 0x08002000:leave -d 0483:df11
+
 
 
 
@@ -35,15 +34,37 @@ python3 ~/katapult/scripts/flash_can.py -q
 ### VTCAT
 ##  Pico :  (usb can bridge)
 ##  EBB36: 0f31066bab9f
-##  PitB : 
+##  PitB : 62206b36544e
 
 ### Micron
 ##  Manta: 8ac34ee54870
 ##  EBB36: 75e72618a866
 
+### E3D
+##  EBB36: 
+##  PitB : b1d44ac537b4 
 
-##  PitB : b1d44ac537b4 (broken ADC)
 
+
+#-------------------------#
+#   FLASH Initial         #
+#-------------------------#
+
+cd katapult/
+make clean
+make menuconfig
+make -j 4
+sudo dfu-util -a 0 -D ~/katapult/out/canboot.bin --dfuse-address 0x08000000:force:mass-erase:leave -d 0483:df11
+
+cd ../klipper
+make clean
+make menuconfig
+make -j 4
+
+python3 ~/katapult/scripts/flash_can.py -q
+
+# flash the EBB with
+python3 ~/katapult/scripts/flash_can.py  -u <UID> 
 
 
 #-------------------------#
