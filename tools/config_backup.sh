@@ -1,66 +1,38 @@
 #!/bin/bash
-
-
-### Changes
-# Aug 28, 2024
-#  Updates from EricZimmerman 
-# Feb 12, 2024
-#  added auto banch name
-# Sep 10, 2023 
-#  removed legacy token notes
-#  marked script with filemod +x
-#  renamed default branch
-# Jul 24, 2023 
 #  Initial Version from https://github.com/EricZimmerman/VoronTools/blob/main/autocommit.sh
-###
 
-#####################################################################
-### Please set the paths accordingly. In case you don't have all  ###
-### the listed folders, just keep that line commented out.        ###
-#####################################################################
+loc_config=~/printer_data/config/printerconfig
+loc_klipper=~/klipper
 
-### Path to your config folder you want to backup
-config_folder=~/printer_data/config/printerconfig
+loc_moonraker=~/moonraker
 
-### Path to your Klipper folder, by default that is '~/klipper'
-klipper_folder=~/klipper
+loc_mainsail=~/mainsail
 
-### Path to your Moonraker folder, by default that is '~/moonraker'
-moonraker_folder=~/moonraker
+loc_fluidd=~/fluidd
 
-### Path to your Mainsail folder, by default that is '~/mainsail'
-mainsail_folder=~/mainsail
+branch=$(git -C $loc_config branch -vv | grep -Po  "^[\s\*]*\K[^\s]*(?=.*$(git -C $loc_config  branch -rl '*/HEAD' | grep -o '[^ ]\+$'))")
 
-### Path to your Fluidd folder, by default that is '~/fluidd'
-fluidd_folder=~/fluidd
-
-### The branch of the repository that you want to save your config
-branch=$(git -C $config_folder branch -vv | grep -Po  "^[\s\*]*\K[^\s]*(?=.*$(git -C $config_folder  branch -rl '*/HEAD' | grep -o '[^ ]\+$'))")
-
-#####################################################################
-################ !!! DO NOT EDIT BELOW THIS LINE !!! ################
-#####################################################################
 grab_version(){
-  if [ ! -z "$klipper_folder" ]; then
-    klipper_commit=$(git -C $klipper_folder describe --always --tags --long | awk '{gsub(/^ +| +$/,"")} {print $0}')
+  if [ -d "$loc_klipper" ]; then
+    klipper_commit=$(git -C $loc_klipper describe --always --tags --long | awk '{gsub(/^ +| +$/,"")} {print $0}')
     m1="Klipper version: $klipper_commit"
   fi
-  if [ ! -z "$moonraker_folder" ]; then
-    moonraker_commit=$(git -C $moonraker_folder describe --always --tags --long | awk '{gsub(/^ +| +$/,"")} {print $0}')
+  if [ -d "$loc_moonraker" ]; then
+    moonraker_commit=$(git -C $loc_moonraker describe --always --tags --long | awk '{gsub(/^ +| +$/,"")} {print $0}')
     m2="Moonraker version: $moonraker_commit"
   fi
-  if [ ! -z "$mainsail_folder" ]; then
-    mainsail_ver=$(head -n 1 $mainsail_folder/.version)
+  if [ -f "$loc_mainsail/.version" ]; then
+    mainsail_ver=$(head -n 1 $loc_mainsail/.version)
     m3="Mainsail version: $mainsail_ver"
   fi
-  if [ ! -z "$fluidd_folder" ]; then
-    fluidd_ver=$(head -n 1 $fluidd_folder/.version)
+  if [ -f "$loc_fluidd/version" ]; then
+    fluidd_ver=$(head -n 1 $loc_fluidd/.version)
     m4="Fluidd version: $fluidd_ver"
   fi
 }
 
 push_config(){
-  cd $config_folder
+  cd $loc_config
   git pull origin $branch --no-rebase
   git add .
   current_date=$(date +"%Y-%m-%d %T")
