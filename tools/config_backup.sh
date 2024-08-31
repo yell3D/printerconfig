@@ -3,11 +3,8 @@
 
 loc_config=~/printer_data/config/printerconfig
 loc_klipper=~/klipper
-
 loc_moonraker=~/moonraker
-
 loc_mainsail=~/mainsail
-
 loc_fluidd=~/fluidd
 
 branch=$(git -C $loc_config branch -vv | grep -Po  "^[\s\*]*\K[^\s]*(?=.*$(git -C $loc_config  branch -rl '*/HEAD' | grep -o '[^ ]\+$'))")
