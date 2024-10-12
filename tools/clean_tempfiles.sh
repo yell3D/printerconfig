@@ -1,4 +1,5 @@
 #!/bin/bash
+
 find ~/printer_data/logs/ -type f -mtime +1 -delete -print
 find ~/printer_data/gcodes/ -type f -mtime +20 -delete -print
 
