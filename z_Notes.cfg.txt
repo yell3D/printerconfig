@@ -163,6 +163,9 @@ chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_* && chmod 644 ~/.ssh/id_*.pub && chmod 
 cat ~/.ssh/id_ed25519_printerbackupscript.pub
 # output goes to https://github.com/yell3D/printerconfig/settings/keys
 
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_ed25519_printerbackupscript
+
 cd ~/printer_data/config/
 git clone git@github.com:yell3D/printerconfig.git
 cd ~/printer_data/config/printerconfig/
