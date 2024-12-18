@@ -222,6 +222,10 @@ cat <<EOT >> ~/printer_data/config/printer.cfg
 EOT
 
 
+mv ~/printer_data/config/crowsnest.conf ~/printer_data/config/.crowsnest.conf.orig
+ln -s ~/printer_data/config/printerconfig/printer_supplement/$printer/crowsnest.conf ~/printer_data/config/crowsnest.conf 
+
+
 ~/klipper_tmc_autotune/install.sh
 ~/klippain-shaketune/install.sh
 
