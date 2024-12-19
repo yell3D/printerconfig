@@ -22,8 +22,19 @@ CARTOGRAPHER_THRESHOLD_SCAN MIN=2000 MAX=2300 QUALIFY_SAMPLES=2 VERIFY_SAMPLES=2
 
 #ht flash
 sudo systemctl stop klipper
-~/katapult/scripts/flashtool.py -u 784f79c281df -f /home/biqu/printer_data/config/cartoHT_1M_5.1.0.bin 
+~/katapult/scripts/flashtool.py -u 784f79c281df -f printer_data/config/tmp/G431_1M.bin
 sudo systemctl start klipper
+
+
+## carto swap
+## dfu mode single flash for beta
+sudo systemctl stop klipper
+# sudo dfu-util -R -a 0 -s 0x08000000:leave -D printer_data/config/tmp/Katapult_CAN_1000000.bin
+# sudo dfu-util -R -a 0 -s 0x08002000:leave -D printer_data/config/tmp/carto_fw_.bin
+sudo systemctl start klipper
+
+
+
 
 #-------------------------#
 #   CAN Initial           #
@@ -82,11 +93,6 @@ sudo service klipper start
 # press manta buttons
 sudo dfu-util -a 0 -D ~/klipper/out/klipper.bin --dfuse-address 0x08002000:leave -d 0483:df11
 
-
-## carto swap
-## dfu mode single flash for beta
-# dfu-util -R -a 0 -s 0x08000000:leave -D printer_data/config/Katapult_CAN_1000000.bin
-# dfu-util -R -a 0 -s 0x08002000:leave -D printer_data/config/ctap1m.bin
 
 #-------------------------#
 #   Klipper Update        #
