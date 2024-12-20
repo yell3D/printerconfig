@@ -37,7 +37,7 @@ sudo systemctl start klipper
 
 
 #-------------------------#
-#   CAN Initial           #
+#   CAN                   #
 #-------------------------#
 
 cd katapult/
@@ -82,16 +82,24 @@ make menuconfig KCONFIG_CONFIG=config.ebb36
 make -j 4 KCONFIG_CONFIG=config.ebb36
 
 ~/katapult/scripts/flashtool.py -u 0f31066bab9f
+~/katapult/scripts/flashtool.py -u 741c8442e7ca
 
+
+#-[m8pv1]
+
+make clean KCONFIG_CONFIG=config.m8pv1
+make menuconfig KCONFIG_CONFIG=config.m8pv1
+make -j 4 KCONFIG_CONFIG=config.m8pv1
+
+~/katapult/scripts/flashtool.py -u 8ac34ee54870 -r
+~/katapult/scripts/flashtool.py -f ~/klipper/out/klipper.bin  -d /dev/serial/by-id/usb-katapult_stm32g0b1xx_3C00540013504B4633373520-if00
+
+#-[Carto]
+
+~/katapult/scripts/flashtool.py -u 784f79c281df -f ~/printer_data/config/tmp/cartoHT_1M.bin
 
 sudo service klipper start
 
-###################################
-## no katapult
-
-# new make config for manta
-# press manta buttons
-sudo dfu-util -a 0 -D ~/klipper/out/klipper.bin --dfuse-address 0x08002000:leave -d 0483:df11
 
 
 #-------------------------#
