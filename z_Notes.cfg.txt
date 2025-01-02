@@ -197,13 +197,20 @@ sed -i "s/VTcat/${printer}/g" ~/printer_data/config/printerconfig/printer_supple
 echo "
 [include ./printerconfig/printer_supplement/$printer/moonraker.conf]" >> ~/printer_data/config/moonraker.conf
 
-cd ~
-grep origin  ~/printer_data/config/printerconfig/skeleton/moonraker.conf  | cut  -c 9- | while read -r line ; do
-    git clone $line
-done
 
-#echo "
-#[include ./printerconfig/printer_supplement/$printer/crowsnest.conf]" >> ~/printer_data/config/crowsnest.conf
+
+wget -O - https://raw.githubusercontent.com/Frix-x/klippain-shaketune/main/install.sh | bash
+git clone https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging.git
+wget -O - https://raw.githubusercontent.com/andrewmcgr/klipper_tmc_autotune/main/install.sh | bash
+git clone https://github.com/Arksine/katapult
+git clone https://github.com/Cartographer3D/cartographer-klipper.git
+./cartographer-klipper/install.sh
+
+
+
+rm  ~/printer_data/config/crowsnest.conf
+ln -s ~/printer_data/config/printerconfig/printer_supplement/$printer/crowsnest.conf ~/printer_data/config/crowsnest.conf
+
 
 
 echo "
@@ -236,12 +243,7 @@ cat <<EOT >> ~/printer_data/config/printer.cfg
 EOT
 
 
-mv ~/printer_data/config/crowsnest.conf ~/printer_data/config/.crowsnest.conf.orig
-ln -s ~/printer_data/config/printerconfig/printer_supplement/$printer/crowsnest.conf ~/printer_data/config/crowsnest.conf 
 
-
-~/klipper_tmc_autotune/install.sh
-~/klippain-shaketune/install.sh
 
 
 CAN Setup
