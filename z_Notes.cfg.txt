@@ -186,8 +186,7 @@ cd ~/printer_data/config/printerconfig/
 
 git config --add --local core.sshCommand 'ssh -i ~/.ssh/id_ed25519_printerbackupscript'
 git config --global user.name $USER@$printer
-git config --global user.mail $USER@$printer
-
+git config --global user.email $USER@$printer
 
 
 cp -r ~/printer_data/config/printerconfig/printer_supplement/vtcat ~/printer_data/config/printerconfig/printer_supplement/$printer
