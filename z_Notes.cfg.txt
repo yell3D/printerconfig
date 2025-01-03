@@ -160,12 +160,12 @@ printer="e3d"
 
 # sudo /sbin/useradd -o -u 1000 -g 1000 pi
 # sudo usermod --shell /bin/bash pi
-# fstab: 
-#     /home/biqu /home/pi none defaults,bind 0 0
+# sudo echo "/home/dietpi /home/pi none defaults,bind 0 0" >>/etc/fstab
 # sudo systemctl daemon-reload
 # sudo mkdir /home/pi
-# sudo mount --bind /home/biqu /home/pi
+# sudo mount --bind /home/dietpi /home/pi
 # sudo mkdir -p /home/pi
+
 mkdir -p ~/.ssh/
 touch ~/.ssh/known_hosts
 
@@ -194,9 +194,14 @@ cp -r ~/printer_data/config/printerconfig/printer_supplement/vtcat ~/printer_dat
 
 sed -i "s/VTcat/${printer}/g" ~/printer_data/config/printerconfig/printer_supplement/$printer/KlipperScreen.conf
 
-echo "
-[include ./printerconfig/printer_supplement/$printer/moonraker.conf]" >> ~/printer_data/config/moonraker.conf
 
+echo -e "\n\n[include ./printerconfig/printer_supplement/$printer/moonraker.conf]" >> ~/printer_data/config/moonraker.conf
+
+
+rm  ~/printer_data/config/crowsnest.conf
+ln -s ~/printer_data/config/printerconfig/printer_supplement/$printer/crowsnest.conf ~/printer_data/config/crowsnest.conf
+
+echo -e "\n\n[include ./printerconfig/printer_supplement/$printer/KlipperScreen.conf]" >> ~/printer_data/config/KlipperScreen.conf
 
 
 wget -O - https://raw.githubusercontent.com/Frix-x/klippain-shaketune/main/install.sh | bash
@@ -208,15 +213,7 @@ git clone https://github.com/Cartographer3D/cartographer-klipper.git
 
 
 
-rm  ~/printer_data/config/crowsnest.conf
-ln -s ~/printer_data/config/printerconfig/printer_supplement/$printer/crowsnest.conf ~/printer_data/config/crowsnest.conf
 
-
-
-echo "
-[include ./printerconfig/printer_supplement/$printer/KlipperScreen.conf]" >> ~/printer_data/config/KlipperScreen.conf
-
-wget -O ~/klipper/klippy/extras/gcode_shell_command.py https://raw.githubusercontent.com/dw-0/kiauh/master/resources/gcode_shell_command.py
 
 cp ~/printer_data/config/printerconfig/_printer_.cfg ~/printer_data/config/printerconfig/_printer_$printer.cfg
 sed -i "1i[include printerconfig/_printer_${printer}.cfg]" ~/printer_data/config/printer.cfg
@@ -244,10 +241,8 @@ EOT
 
 
 
-
-
 CAN Setup
-
+sudo mkdir /etc/network/interfaces.d/
 sudo sh -c "cat >/etc/network/interfaces.d/can0 << 'EOL'
 allow-hotplug can0
 iface can0 can static
@@ -255,8 +250,20 @@ iface can0 can static
     up ifconfig $IFACE txqueuelen 128
 EOL"
 
-ifup can0
+
 
 sudo apt-get install cpufrequtils
 echo '%sudo ALL=(ALL:ALL) NOPASSWD: /usr/bin/cpufreq-set' | sudo tee -a /etc/sudoers.d/cpufreq-set
 sudo chmod 440 /etc/sudoers.d/cpufreq-set
+
+
+#### dietpi
+
+apt-get install neovim git less
+
+## ssh client
+dietpi-software install 0
+
+
+## old 
+wget -O ~/klipper/klippy/extras/gcode_shell_command.py https://raw.githubusercontent.com/dw-0/kiauh/master/resources/gcode_shell_command.py
