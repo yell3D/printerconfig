@@ -246,8 +246,10 @@ sudo sh -c "cat >/etc/network/interfaces.d/can0 << 'EOL'
 allow-hotplug can0
 iface can0 can static
     bitrate 1000000
-    up ifconfig $IFACE txqueuelen 128
+    up ip link set \$IFACE txqueuelen 128
 EOL"
+
+sudo ip link set can0 up
 
 
 
@@ -258,7 +260,7 @@ sudo chmod 440 /etc/sudoers.d/cpufreq-set
 
 #### dietpi
 
-apt-get install neovim git less
+apt-get install neovim git less policykit-1
 
 ## ssh client
 dietpi-software install 0
