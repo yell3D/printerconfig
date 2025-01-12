@@ -22,7 +22,13 @@ CARTOGRAPHER_THRESHOLD_SCAN MIN=2000 MAX=2300 QUALIFY_SAMPLES=2 VERIFY_SAMPLES=2
 
 #ht flash
 sudo systemctl stop klipper
-~/katapult/scripts/flashtool.py -u 784f79c281df -f printer_data/config/tmp/G431_1M.bin
+~/katapult/scripts/flashtool.py -u 784f79c281df -f ~/printer_data/config/tmp/G431_1M.bin
+sudo systemctl start klipper
+
+
+#kraken flash
+sudo systemctl stop klipper
+~/katapult/scripts/flashtool.py -u 6e1aedba6383 -f ~/printer_data/config/tmp/carto_1M_5.1.3.bin
 sudo systemctl start klipper
 
 
@@ -40,6 +46,9 @@ sudo systemctl start klipper
 #   CAN                   #
 #-------------------------#
 
+~/klippy-env/bin/python ~/klipper/scripts/canbus_query.py can0
+
+
 cd katapult/
 make clean
 make menuconfig
@@ -56,10 +65,11 @@ make clean KCONFIG_CONFIG=config.pico
 make menuconfig KCONFIG_CONFIG=config.pico
 make -j 4 KCONFIG_CONFIG=config.pico
 
-### usb bridge
+### flash USB to CAN bridge
 ~/katapult/scripts/flashtool.py -u 6579fddfb1e6
 # error okay
 ~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00
+# sudo ~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00 -f /home/pi/klipper/out/klipper.bin
 
 #-[RPI]
 
@@ -81,8 +91,8 @@ make clean KCONFIG_CONFIG=config.ebb36
 make menuconfig KCONFIG_CONFIG=config.ebb36
 make -j 4 KCONFIG_CONFIG=config.ebb36
 
-~/katapult/scripts/flashtool.py -u 0f31066bab9f
-~/katapult/scripts/flashtool.py -u 741c8442e7ca
+~/katapult/scripts/flashtool.py -u 0f31066bab9f  #vtcat
+~/katapult/scripts/flashtool.py -u 741c8442e7ca  # micron
 
 
 #-[m8pv1]
