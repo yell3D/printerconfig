@@ -68,8 +68,7 @@ make -j 4 KCONFIG_CONFIG=config.pico
 ### flash USB to CAN bridge
 ~/katapult/scripts/flashtool.py -u 6579fddfb1e6
 # error okay
-~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00
-# sudo ~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00 -f /home/pi/klipper/out/klipper.bin
+sudo ~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00 -f /home/pi/klipper/out/klipper.bin
 
 #-[RPI]
 
