@@ -26,10 +26,13 @@ sudo systemctl stop klipper
 sudo systemctl start klipper
 
 
-#kraken flash
+# white VT flash
 sudo systemctl stop klipper
-~/katapult/scripts/flashtool.py -u 6e1aedba6383 -f ~/printer_data/config/tmp/carto_1M_5.1.3.bin
+~/katapult/scripts/flashtool.py -u 83af367d0529 -f ~/printer_data/config/tmp/carto_1M_5.1.3.bin
 sudo systemctl start klipper
+
+
+
 
 
 ## carto swap
@@ -118,7 +121,7 @@ sudo service klipper start
 ##  Pico : 6579fddfb1e6 (usb can bridge)
 ##  EBB36: 0f31066bab9f
 ##  PitB : b1d44ac537b4 
-##  Carto: 6e1aedba6383 (kraken)
+##  Carto: 83af367d0529 (white) 
 
 ### Micron
 ##  Manta: 8ac34ee54870
@@ -128,7 +131,10 @@ sudo service klipper start
 ### E3D
 ##  EBB36: 
 
-##  Carto: 093636d6521f (meltbro)
+# Spares:
+# Carto:
+#    093636d6521f (meltbro)
+#    6e1aedba6383 (kraken)
 
 
 ## roadming
