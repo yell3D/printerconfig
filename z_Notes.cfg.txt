@@ -129,7 +129,9 @@ sudo service klipper start
 ##  Carto: 784f79c281df (hight temp)
 
 ### E3D
-##  EBB36: 
+##  EBB36:
+##  EBB36:
+##  PitB : 62206b36544e
 
 # Spares:
 # Carto:
@@ -143,7 +145,7 @@ sudo service klipper start
 
 ## dead
 ## EBB36: 75e72618a866  (max ebb)
-## PitB : 62206b36544e
+
 
 sudo service klipper stop
 sudo service klipper start
@@ -162,6 +164,10 @@ ls /dev/serial/by-id
 ###################################################################################################
 
 #Creality 
+
+make clean KCONFIG_CONFIG=config.creality422
+make menuconfig KCONFIG_CONFIG=config.creality422
+make -j 4 KCONFIG_CONFIG=config.creality422
 ./scripts/flash-sdcard.sh /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 creality-v4.2.2
 
 
@@ -169,17 +175,23 @@ ls /dev/serial/by-id
 #   New Printer Setup     #
 #-------------------------#
 
+sudo dietpi-software install 0
+sudo apt-get install neovim git less policykit-1 python3 cpufrequtils -y
 
-printer="e3d"
+printer="E3Dtoolchanger"
 
 
-# sudo /sbin/useradd -o -u 1000 -g 1000 pi
-# sudo usermod --shell /bin/bash pi
-# sudo echo "/home/dietpi /home/pi none defaults,bind 0 0" >>/etc/fstab
-# sudo systemctl daemon-reload
-# sudo mkdir /home/pi
-# sudo mount --bind /home/dietpi /home/pi
-# sudo mkdir -p /home/pi
+echo '%sudo ALL=(ALL:ALL) NOPASSWD: /usr/bin/cpufreq-set' | sudo tee -a /etc/sudoers.d/cpufreq-set
+sudo chmod 440 /etc/sudoers.d/cpufreq-set
+
+
+sudo /sbin/useradd -o -u 1000 -g 1000 pi
+sudo usermod --shell /bin/bash pi
+echo '/home/dietpi /home/pi none defaults,bind 0 0' | sudo tee -a /etc/fstab
+sudo systemctl daemon-reload
+sudo mkdir /home/pi
+sudo mount --bind /home/dietpi /home/pi
+sudo mkdir -p /home/pi
 
 mkdir -p ~/.ssh/
 touch ~/.ssh/known_hosts
@@ -204,19 +216,18 @@ git config --global user.name $USER@$printer
 git config --global user.email $USER@$printer
 
 
+cd ~ && git clone https://github.com/dw-0/kiauh.git
+./kiauh/kiauh.sh
+
+
+
 cp -r ~/printer_data/config/printerconfig/printer_supplement/vtcat ~/printer_data/config/printerconfig/printer_supplement/$printer
 
 sed -i "s/VTcat/${printer}/g" ~/printer_data/config/printerconfig/printer_supplement/$printer/KlipperScreen.conf
-
-
-echo -e "\n\n[include ./printerconfig/printer_supplement/$printer/moonraker.conf]" >> ~/printer_data/config/moonraker.conf
-
+echo -e "\n\n[include ./printerconfig/printer_supplement/$printer/KlipperScreen.conf]" >> ~/printer_data/config/KlipperScreen.conf
 
 rm  ~/printer_data/config/crowsnest.conf
 ln -s ~/printer_data/config/printerconfig/printer_supplement/$printer/crowsnest.conf ~/printer_data/config/crowsnest.conf
-
-echo -e "\n\n[include ./printerconfig/printer_supplement/$printer/KlipperScreen.conf]" >> ~/printer_data/config/KlipperScreen.conf
-
 
 wget -O - https://raw.githubusercontent.com/Frix-x/klippain-shaketune/main/install.sh | bash
 git clone https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging.git
@@ -228,11 +239,49 @@ git clone https://github.com/Cartographer3D/cartographer-klipper.git
 
 
 
+cat <<EOT > ~/printer_data/config/moonraker.conf
+[server]
+host: 0.0.0.0
+port: 7125
+klippy_uds_address: /home/pi/printer_data/comms/klippy.sock
 
-cp ~/printer_data/config/printerconfig/_printer_.cfg ~/printer_data/config/printerconfig/_printer_$printer.cfg
-sed -i "1i[include printerconfig/_printer_${printer}.cfg]" ~/printer_data/config/printer.cfg
+[authorization]
+trusted_clients:
+    192.168.0.0/16
+    10.0.0.0/8
+    127.0.0.0/8
+    169.254.0.0/16
+    172.16.0.0/12
+    192.168.0.0/16
+    FE80::/10
+    ::1/128
+cors_domains:
+    *.lan
+    *.local
+    *://localhost
+    *://localhost:*
+    *://my.mainsail.xyz
+    *://app.fluidd.xyz
 
-cat <<EOT >> ~/printer_data/config/printer.cfg
+[octoprint_compat]
+
+[history]
+
+[update_manager]
+channel: dev
+refresh_interval: 168
+
+[include ./printerconfig/printer_supplement/$printer/moonraker.conf]
+
+EOT
+
+# TODO
+# cp ~/printer_data/config/printerconfig/_printer_.cfg ~/printer_data/config/printerconfig/_printer_$printer.cfg
+
+
+cat <<EOT > ~/printer_data/config/printer.cfg
+[include printerconfig/_printer_${printer}.cfg]
+
 #*# <---------------------- SAVE_CONFIG ---------------------->
 #*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
 #*#
@@ -249,7 +298,7 @@ cat <<EOT >> ~/printer_data/config/printer.cfg
 #*# pid_kd = 104.325
 #*#
 #*# [probe]
-#*# z_offset = 13.420
+#*# z_offset = 10
 #*#
 EOT
 
@@ -268,18 +317,3 @@ sudo ip link set can0 up
 
 
 
-sudo apt-get install cpufrequtils
-echo '%sudo ALL=(ALL:ALL) NOPASSWD: /usr/bin/cpufreq-set' | sudo tee -a /etc/sudoers.d/cpufreq-set
-sudo chmod 440 /etc/sudoers.d/cpufreq-set
-
-
-#### dietpi
-
-apt-get install neovim git less policykit-1
-
-## ssh client
-dietpi-software install 0
-
-
-## old 
-wget -O ~/klipper/klippy/extras/gcode_shell_command.py https://raw.githubusercontent.com/dw-0/kiauh/master/resources/gcode_shell_command.py
