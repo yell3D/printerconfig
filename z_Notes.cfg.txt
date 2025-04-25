@@ -10,112 +10,111 @@ https://klipperscreen.readthedocs.io/en/latest/Installation/
 # set fake position
 SET_KINEMATIC_POSITION X=60 Y=60 Z=5
 
-#-------------------------#
-#   Carto                 #
-#-------------------------#
-# carto find teshhold
-g0 X15  Y25 Z20
-CARTOGRAPHER_ESTIMATE_BACKLASH
-CARTOGRAPHER_THRESHOLD_SCAN MIN=1000 MAX=2300 QUALIFY_SAMPLES=2 VERIFY_SAMPLES=20 STEP=50 TOLERANCE=0.04 SKIP=0 RANGE_VALUE=7
-# recheck 
-CARTOGRAPHER_THRESHOLD_SCAN MIN=1000 MAX=1000 QUALIFY_SAMPLES=5 VERIFY_SAMPLES=50 TOLERANCE=0.01
-
-#ht flash
-sudo systemctl stop klipper
-~/katapult/scripts/flashtool.py -u 784f79c281df -f ~/printer_data/config/tmp/G431_1M.bin
-sudo systemctl start klipper
-
-
-# white VT flash
-sudo systemctl stop klipper
-~/katapult/scripts/flashtool.py -u 83af367d0529 -f ~/printer_data/config/tmp/carto_1M_5.1.3.bin
-sudo systemctl start klipper
-
-
-
-
-
-## carto swap
-## dfu mode single flash for beta
-sudo systemctl stop klipper
-# sudo dfu-util -R -a 0 -s 0x08000000:leave -D printer_data/config/tmp/Katapult_CAN_1000000.bin
-# sudo dfu-util -R -a 0 -s 0x08002000:leave -D printer_data/config/tmp/carto_fw_.bin
-sudo systemctl start klipper
-
 
 
 
 #-------------------------#
-#   CAN                   #
+#   Flashing              #
 #-------------------------#
 
 ~/klippy-env/bin/python ~/klipper/scripts/canbus_query.py can0
 
 
-cd katapult/
-make clean
-make menuconfig
-make -j 4
-sudo dfu-util -a 0 -D ~/katapult/out/canboot.bin --dfuse-address 0x08000000:force:mass-erase:leave -d 0483:df11
-
-###################### Flash/Update Klipper
-# ex vtcat
-sudo service klipper stop
-
-#-[Pico]
-cd ~/klipper
-make clean KCONFIG_CONFIG=config.pico
-make menuconfig KCONFIG_CONFIG=config.pico
-make -j 4 KCONFIG_CONFIG=config.pico
-
-### flash USB to CAN bridge
-~/katapult/scripts/flashtool.py -u 6579fddfb1e6
-# error okay
-sudo ~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00 -f /home/pi/klipper/out/klipper.bin
-
-#-[RPI]
-
+##### [ RPI ] ###################################################################################
 make clean KCONFIG_CONFIG=config.rpi
 make menuconfig KCONFIG_CONFIG=config.rpi
 make flash KCONFIG_CONFIG=config.rpi
+###################################################################################################
 
-#-[PitB]
-
+##### [ PitB ] ###################################################################################
 make clean KCONFIG_CONFIG=config.pitb
 make menuconfig KCONFIG_CONFIG=config.pitb
 make -j 4 KCONFIG_CONFIG=config.pitb
 
-~/katapult/scripts/flashtool.py -u b1d44ac537b4
+~/katapult/scripts/flashtool.py -u b1d44ac537b4 # cat
+###################################################################################################
 
-#-[Ebb36]
-
+##### [ Ebb36 ] ###################################################################################
 make clean KCONFIG_CONFIG=config.ebb36
 make menuconfig KCONFIG_CONFIG=config.ebb36
 make -j 4 KCONFIG_CONFIG=config.ebb36
 
-~/katapult/scripts/flashtool.py -u 0f31066bab9f  #vtcat
+~/katapult/scripts/flashtool.py -u 0f31066bab9f  # vtcat
 ~/katapult/scripts/flashtool.py -u 741c8442e7ca  # micron
+~/katapult/scripts/flashtool.py -u 141f75acc6fa  # E3D T0
+~/katapult/scripts/flashtool.py -u e29a7028b3bf  # E3D T1
+###################################################################################################
 
-
-#-[m8pv1]
-
+##### [ m8pv1 ] ###################################################################################
 make clean KCONFIG_CONFIG=config.m8pv1
 make menuconfig KCONFIG_CONFIG=config.m8pv1
 make -j 4 KCONFIG_CONFIG=config.m8pv1
 
 ~/katapult/scripts/flashtool.py -u 8ac34ee54870 -r
 ~/katapult/scripts/flashtool.py -f ~/klipper/out/klipper.bin  -d /dev/serial/by-id/usb-katapult_stm32g0b1xx_3C00540013504B4633373520-if00
+###################################################################################################
 
-#-[Carto]
+##### [ Carto ] ################################################################################
+~/katapult/scripts/flashtool.py -u 784f79c281df -f ~/printer_data/config/tmp/G431_1M.bin          # ht Micron
+~/katapult/scripts/flashtool.py -u 83af367d0529 -f ~/printer_data/config/tmp/carto_1M_5.1.3.bin   # white VT flash
+###################################################################################################
 
-~/katapult/scripts/flashtool.py -u 784f79c281df -f ~/printer_data/config/tmp/cartoHT_1M.bin
+##### [ SKR Pico ] ################################################################################
+make clean KCONFIG_CONFIG=config.pico
+make menuconfig KCONFIG_CONFIG=config.pico
+make -j 4 KCONFIG_CONFIG=config.pico
 
-sudo service klipper start
+~/katapult/scripts/flashtool.py -r -u 6579fddfb1e6
+~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00    # Trident
+###################################################################################################
+
+##### [ Creality ] ################################################################################
+make clean KCONFIG_CONFIG=config.creality422
+make menuconfig KCONFIG_CONFIG=config.creality422
+make -j 4 KCONFIG_CONFIG=config.creality422
+./scripts/flash-sdcard.sh /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 creality-v4.2.2
+###################################################################################################
+
+##### [ carto swap ] ##############################################################################
+# sudo dfu-util -R -a 0 -s 0x08000000:leave -D printer_data/config/tmp/Katapult_CAN_1000000.bin
+# sudo dfu-util -R -a 0 -s 0x08002000:leave -D printer_data/config/tmp/carto_fw_.bin
+###################################################################################################
 
 
+##### [ flash USB to CAN bridge ] #################################################################
+# skr pico
+~/katapult/scripts/flashtool.py -r -u 6579fddfb1e6
+~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00 -f /home/pi/klipper/out/klipper.bin
+###################################################################################################
+
+##### [ CAN to USB/CAN bridge ] ###################################################################
+# gbb 15
+cd ~/katapult/
+make clean KCONFIG_CONFIG=config.gbb15
+make menuconfig KCONFIG_CONFIG=config.gbb15
+make -j 4 KCONFIG_CONFIG=config.gbb15
+
+~/katapult/scripts/flashtool.py -u 7c5f1bf64665 -f out/deployer.bin
+
+cd ~/klipper/
+make clean KCONFIG_CONFIG=config.gbb15
+make menuconfig KCONFIG_CONFIG=config.gbb15
+make -j 4 KCONFIG_CONFIG=config.gbb15
+~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_stm32g0b1xx_300032000C504D4D37393820-if00
+###################################################################################################
+
+
+##### [ Katapult Initial] #########################################################################
+cd katapult/
+make clean
+make menuconfig
+make -j 4
+sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/katapult.bin -d 0483:df11
+# dfu-util: Error during download get_status = OKAY
+###################################################################################################
 
 #-------------------------#
-#   Klipper Update        #
+#   Inventory             #
 #-------------------------#
 ### VTCAT
 ##  Pico : 6579fddfb1e6 (usb can bridge)
@@ -129,9 +128,9 @@ sudo service klipper start
 ##  Carto: 784f79c281df (hight temp)
 
 ### E3D
-##  EBB36:
-##  EBB36:
-##  PitB : 62206b36544e
+##  EBB36: 141f75acc6fa (T0)
+##  EBB36: e29a7028b3bf (T1)
+##  GBB15: 7c5f1bf64665
 
 # Spares:
 # Carto:
@@ -141,34 +140,11 @@ sudo service klipper start
 
 ## roadming
 ## RP2040-IS: /dev/serial/by-id/usb-Klipper_rp2040_E6616407E30D5F2F-if00
-##  GBB15: 7c5f1bf64665
+
 
 ## dead
 ## EBB36: 75e72618a866  (max ebb)
-
-
-sudo service klipper stop
-sudo service klipper start
-
-# Pitb & ebb36
-~/katapult/scripts/flashtool.py -u b1d44ac537b4
-
-###################################################################################################
-## SKR Pico 
-~/katapult/scripts/flashtool.py -u 6579fddfb1e6
-#> makes error = OKAY! its just to put the pico in flash mode
-
-ls /dev/serial/by-id
-
-~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00
-###################################################################################################
-
-#Creality 
-
-make clean KCONFIG_CONFIG=config.creality422
-make menuconfig KCONFIG_CONFIG=config.creality422
-make -j 4 KCONFIG_CONFIG=config.creality422
-./scripts/flash-sdcard.sh /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 creality-v4.2.2
+## PitB : 62206b36544e  (no 120R)
 
 
 #-------------------------#
@@ -176,7 +152,7 @@ make -j 4 KCONFIG_CONFIG=config.creality422
 #-------------------------#
 
 sudo dietpi-software install 0
-sudo apt-get install neovim git less policykit-1 python3 cpufrequtils -y
+sudo apt-get install neovim git less policykit-1 python3 cpufrequtils python3-serial -y
 
 printer="E3Dtoolchanger"
 
