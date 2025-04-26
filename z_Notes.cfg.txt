@@ -10,7 +10,7 @@ https://klipperscreen.readthedocs.io/en/latest/Installation/
 # set fake position
 SET_KINEMATIC_POSITION X=60 Y=60 Z=5
 
-
+sudo ip link set can0 down type can
 
 
 #-------------------------#
