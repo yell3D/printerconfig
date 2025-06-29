@@ -32,6 +32,7 @@ make menuconfig KCONFIG_CONFIG=config.pitb
 make -j 4 KCONFIG_CONFIG=config.pitb
 
 ~/katapult/scripts/flashtool.py -u b1d44ac537b4 # cat
+
 ###################################################################################################
 
 ##### [ Ebb36 ] ###################################################################################
@@ -51,7 +52,7 @@ make menuconfig KCONFIG_CONFIG=config.m8pv1
 make -j 4 KCONFIG_CONFIG=config.m8pv1
 
 ~/katapult/scripts/flashtool.py -u 8ac34ee54870 -r
-~/katapult/scripts/flashtool.py -f ~/klipper/out/klipper.bin  -d /dev/serial/by-id/usb-katapult_stm32g0b1xx_3C00540013504B4633373520-if00
+sudo ~/katapult/scripts/flashtool.py -f ~/klipper/out/klipper.bin  -d /dev/serial/by-id/usb-katapult_stm32g0b1xx_3C00540013504B4633373520-if00
 ###################################################################################################
 
 ##### [ Carto ] ################################################################################
@@ -117,10 +118,10 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 #   Inventory             #
 #-------------------------#
 ### VTCAT
-##  Pico : 6579fddfb1e6 (usb can bridge)
+##  Pico : /dev/serial/by-id/usb-SKRpico_rp2040_45503571290ABEA8-if00 # 6579fddfb1e6 (usb can bridge)
 ##  EBB36: 0f31066bab9f
 ##  PitB : b1d44ac537b4 
-##  Carto: 83af367d0529 (white) 
+##  Nocaeb: 2073493dc41e
 
 ### Micron
 ##  Manta: 8ac34ee54870
@@ -136,7 +137,7 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 # Carto:
 #    093636d6521f (meltbro)
 #    6e1aedba6383 (kraken)
-
+#    83af367d0529 (white) 
 
 ## roadming
 ## RP2040-IS: /dev/serial/by-id/usb-Klipper_rp2040_E6616407E30D5F2F-if00
