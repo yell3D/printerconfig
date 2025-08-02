@@ -13,6 +13,11 @@ SET_KINEMATIC_POSITION X=60 Y=60 Z=5
 sudo ip link set can0 down type can
 
 
+Z_TILT_ADJUST HORIZONTAL_MOVE_Z=20 RETRY_TOLERANCE=1 PROBE_SPEED=15 LIFT_SPEED=7 
+Z_TILT_ADJUST HORIZONTAL_MOVE_Z=5 RETRY_TOLERANCE=0.5
+Z_TILT_ADJUST HORIZONTAL_MOVE_Z=3
+
+
 #-------------------------#
 #   Flashing              #
 #-------------------------#
