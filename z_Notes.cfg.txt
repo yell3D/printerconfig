@@ -94,6 +94,7 @@ make -j 4 KCONFIG_CONFIG=config.creality422
 ###################################################################################################
 
 ##### [ CAN to USB/CAN bridge ] ###################################################################
+## Katapult gets USB config
 # gbb 15
 cd ~/katapult/
 make clean KCONFIG_CONFIG=config.gbb15
@@ -102,11 +103,12 @@ make -j 4 KCONFIG_CONFIG=config.gbb15
 
 ~/katapult/scripts/flashtool.py -u 7c5f1bf64665 -f out/deployer.bin
 
+## Klipper gets CAN Bridge Config
 cd ~/klipper/
 make clean KCONFIG_CONFIG=config.gbb15
 make menuconfig KCONFIG_CONFIG=config.gbb15
 make -j 4 KCONFIG_CONFIG=config.gbb15
-~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_stm32g0b1xx_300032000C504D4D37393820-if00
+sudo ~/katapult/scripts/flashtool.py -f /home/pi/klipper/out/klipper.bin -d /dev/serial/by-id/usb-katapult_stm32g0b1xx_300032000C504D4D37393820-if00
 ###################################################################################################
 
 
@@ -124,9 +126,9 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 #-------------------------#
 ### VTCAT
 ##  Pico : /dev/serial/by-id/usb-SKRpico_rp2040_45503571290ABEA8-if00 # 6579fddfb1e6 (usb can bridge)
-##  EBB36: 0f31066bab9f
 ##  PitB : b1d44ac537b4 
-##  Nocaeb: 2073493dc41e
+##  Carto: 76e1aedba6383 (kraken)
+##  H36  : 1e96e16bccc7 # sloppy soldering
 
 ### Micron
 ##  Manta: 8ac34ee54870
@@ -143,6 +145,8 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 #    093636d6521f (meltbro)
 #    6e1aedba6383 (kraken)
 #    83af367d0529 (white) 
+
+##  EBB36: 0f31066bab9f (dual heatsink)
 
 ## roadming
 ## RP2040-IS: /dev/serial/by-id/usb-Klipper_rp2040_E6616407E30D5F2F-if00
