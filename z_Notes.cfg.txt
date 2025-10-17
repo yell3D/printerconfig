@@ -127,7 +127,7 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 ### VTCAT
 ##  Pico : /dev/serial/by-id/usb-SKRpico_rp2040_45503571290ABEA8-if00 # 6579fddfb1e6 (usb can bridge)
 ##  PitB : b1d44ac537b4 
-##  Carto: 76e1aedba6383 (kraken)
+##  Carto: e38076298a8d (purple)
 ##  H36  : 1e96e16bccc7 # sloppy soldering
 
 ### Micron
@@ -142,9 +142,9 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 
 # Spares:
 # Carto:
-#    093636d6521f (meltbro)
 #    6e1aedba6383 (kraken)
-#    83af367d0529 (white) 
+#    83af367d0529 (white)
+#
 
 ##  EBB36: 0f31066bab9f (dual heatsink)
 
