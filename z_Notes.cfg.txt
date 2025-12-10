@@ -177,7 +177,7 @@ echo '/home/dietpi /home/pi none defaults,bind 0 0' | sudo tee -a /etc/fstab
 sudo systemctl daemon-reload
 sudo mkdir /home/pi
 sudo mount --bind /home/dietpi /home/pi
-sudo mkdir -p /home/pi
+
 
 mkdir -p ~/.ssh/
 touch ~/.ssh/known_hosts
