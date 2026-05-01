@@ -63,6 +63,7 @@ sudo ~/katapult/scripts/flashtool.py -f ~/klipper/out/klipper.bin  -d /dev/seria
 ##### [ Carto ] ################################################################################
 ~/katapult/scripts/flashtool.py -u 784f79c281df -f ~/printer_data/config/tmp/G431_1M.bin          # ht Micron
 ~/katapult/scripts/flashtool.py -u 83af367d0529 -f ~/printer_data/config/tmp/carto_1M_5.1.3.bin   # white VT flash
+sudo ~/katapult/scripts/flashtool.py -u e38076298a8d -f ~/cartographer_firmware/firmware/v4/firmware/5.1.0/Cartographer_V4_CAN_1M_8kib_offset.bin # purple
 ###################################################################################################
 
 ##### [ SKR Pico ] ################################################################################
@@ -79,6 +80,14 @@ make clean KCONFIG_CONFIG=config.creality422
 make menuconfig KCONFIG_CONFIG=config.creality422
 make -j 4 KCONFIG_CONFIG=config.creality422
 ./scripts/flash-sdcard.sh /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 creality-v4.2.2
+###################################################################################################
+
+##### [ Fysetc h36 ] ################################################################################
+make clean KCONFIG_CONFIG=config.h36
+make menuconfig KCONFIG_CONFIG=config.h36
+make -j 4 KCONFIG_CONFIG=config.h36
+
+~/katapult/scripts/flashtool.py -f -u 1e96e16bccc7
 ###################################################################################################
 
 ##### [ carto swap ] ##############################################################################
@@ -127,13 +136,14 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 ### VTCAT
 ##  Pico : /dev/serial/by-id/usb-SKRpico_rp2040_45503571290ABEA8-if00 # 6579fddfb1e6 (usb can bridge)
 ##  PitB : b1d44ac537b4 
-##  Carto: e38076298a8d (purple)
-##  H36  : 1e96e16bccc7 # sloppy soldering
+##  Carto: e38076298a8d # purple
+##  H36  : f86d8a50fb3d # rev1.3
 
 ### Micron
 ##  Manta: 8ac34ee54870
 ##  EBB36: 741c8442e7ca
 ##  Carto: 784f79c281df (hight temp)
+
 
 ### E3D
 ##  EBB36: 141f75acc6fa (T0)
@@ -141,10 +151,11 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 ##  GBB15: 7c5f1bf64665
 
 # Spares:
-# Carto:
-#    6e1aedba6383 (kraken)
-#    83af367d0529 (white)
-#
+##  Carto: 6e1aedba6383 # kraken
+##  Carto: 83af367d0529 # white
+##  Carto: e38076298a8d # purple
+##  Carto: e78d5898cf00 # v4 retail rev 1
+##  H36  : 1e96e16bccc7 # sloppy soldering
 
 ##  EBB36: 0f31066bab9f (dual heatsink)
 
