@@ -91,7 +91,7 @@ make -j 4 KCONFIG_CONFIG=config.h36
 ###################################################################################################
 
 ##### [ carto swap ] ##############################################################################
-# sudo dfu-util -R -a 0 -s 0x08000000:leave -D printer_data/config/tmp/Katapult_CAN_1000000.bin
+# sudo dfu-util -R -a 0 -s 0x08000000:mass-erase:force:leave -D printer_data/config/tmp/Katapult_CAN_1000000.bin
 # sudo dfu-util -R -a 0 -s 0x08002000:leave -D printer_data/config/tmp/carto_fw_.bin
 ###################################################################################################
 
