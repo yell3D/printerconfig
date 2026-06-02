@@ -142,7 +142,7 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 ### Micron
 ##  Manta: 8ac34ee54870
 ##  EBB36: 741c8442e7ca
-##  Carto: 784f79c281df (hight temp)
+##  Carto: 784f79c281df (high temp v3)
 
 
 ### E3D
@@ -154,7 +154,7 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 ##  Carto: 6e1aedba6383 # kraken
 ##  Carto: 83af367d0529 # white
 ##  Carto: e38076298a8d # purple
-##  Carto: e78d5898cf00 # v4 retail rev 1
+##  Carto: e78d5898cf00 # v4 retail rev 0
 ##  H36  : 1e96e16bccc7 # sloppy soldering
 
 ##  EBB36: 0f31066bab9f (dual heatsink)
