@@ -137,7 +137,7 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 ##  Pico : /dev/serial/by-id/usb-SKRpico_rp2040_45503571290ABEA8-if00 # 6579fddfb1e6 (usb can bridge)
 ##  PitB : b1d44ac537b4 
 ##  Carto: 73cc54b617cc # v4 rev 1
-##  H36  : f86d8a50fb3d # rev1.3
+##  H36  : 1e96e16bccc7 # sloppy solder
 
 ### Micron
 ##  Manta: 8ac34ee54870
@@ -155,8 +155,6 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 ##  Carto: 83af367d0529 # white
 ##  Carto: e38076298a8d # purple
 ##  Carto: e78d5898cf00 # v4 retail rev 0
-##  H36  : 1e96e16bccc7 # sloppy soldering
-
 ##  EBB36: 0f31066bab9f (dual heatsink)
 
 ## roadming
@@ -166,6 +164,7 @@ sudo dfu-util -R -a 0 -s 0x08000000:force:mass-erase:leave -D ~/katapult/out/kat
 ## dead
 ## EBB36: 75e72618a866  (max ebb)
 ## PitB : 62206b36544e  (no 120R)
+## H36  : f86d8a50fb3d (1.3 via wadxl connect)
 
 
 #-------------------------#
