@@ -72,7 +72,7 @@ make menuconfig KCONFIG_CONFIG=config.pico
 make -j 4 KCONFIG_CONFIG=config.pico
 
 ~/katapult/scripts/flashtool.py -r -u 6579fddfb1e6
-~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00    # Trident
+udo ~/katapult/scripts/flashtool.py -d /dev/serial/by-id/usb-katapult_rp2040_45503571290ABEA8-if00 -f ~/klipper/out/klipper.bin 
 ###################################################################################################
 
 ##### [ Creality ] ################################################################################
